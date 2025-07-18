@@ -1,11 +1,15 @@
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { link } from "@/server/db/schema";
 import { nanoid } from "nanoid";
 
 export const postRouter = createTRPCRouter({
+  get: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select().from(link);
+  }),
+
   create: publicProcedure
     .input(
       z.object({
@@ -27,18 +31,26 @@ export const postRouter = createTRPCRouter({
           throw new Error("Custom alias already exists");
         }
       }
-      
+
       // Generate short link - either use custom or generate with nanoid
       const short = custom ?? nanoid(6);
-      
+
       // Insert the new link
       const [newLink] = await ctx.db
         .insert(link)
         .values({ long, short })
         .returning();
-      
+
       return {
         shortUrl: `http://localhost:3000/${newLink?.short}`,
       };
+    }),
+  incrementClick: publicProcedure
+    .input(z.object({ short: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db
+        .update(link)
+        .set({ clicks: sql`${link.clicks} + 1` })
+        .where(eq(link.short, input.short));
     }),
 });
