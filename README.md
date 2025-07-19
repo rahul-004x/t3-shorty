@@ -1,29 +1,114 @@
-# Create T3 App
+# T3 Shorty: URL Shortener
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A modern, type-safe URL shortener built with the T3 Stack.
 
-## What's next? How do I make an app with this?
+![T3 Shorty Banner](https://via.placeholder.com/800x200?text=T3+Shorty)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## 🚀 Features
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+- **URL Shortening**: Create short, memorable links for any URL
+- **Custom Slugs**: Define your own custom short URLs (optional)
+- **Click Tracking**: Monitor how many times your short links are clicked
+- **User Authentication**: Secure user accounts with Clerk
+- **Personal Dashboard**: View and manage all your shortened links
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## 🛠️ Tech Stack
 
-## Learn More
+This project leverages the powerful [T3 Stack](https://create.t3.gg/):
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- [Next.js](https://nextjs.org) - React framework with App Router
+- [Clerk](https://clerk.com) - Authentication and user management
+- [Drizzle ORM](https://orm.drizzle.team) - Type-safe database ORM
+- [Postgres](https://www.postgresql.org) - SQL database
+- [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS framework
+- [tRPC](https://trpc.io) - End-to-end type-safe APIs
+- [TypeScript](https://www.typescriptlang.org) - Type safety throughout
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## 🏁 Getting Started
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### Prerequisites
 
-## How do I deploy this?
+- [Node.js](https://nodejs.org/) (v18 or newer)
+- [pnpm](https://pnpm.io/) (v8 or newer)
+- PostgreSQL database
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/rahul-004x/t3-shorty.git
+   cd t3-shorty
+   ```
+
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+3. Set up environment variables:
+   Copy the `.env.example` file to `.env.local` and fill in your credentials:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+4. Start the PostgreSQL database:
+   ```bash
+   ./start-database.sh
+   ```
+
+5. Run database migrations:
+   ```bash
+   pnpm db:push
+   ```
+
+6. Start the development server:
+   ```bash
+   pnpm dev
+   ```
+
+7. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📊 Database Management
+
+- Generate migrations: `pnpm db:generate`
+- Apply migrations: `pnpm db:migrate`
+- Push schema changes: `pnpm db:push`
+- Open Drizzle Studio: `pnpm db:studio`
+
+## 🧰 Development Commands
+
+- `pnpm dev` - Start development server
+
+## 📦 Project Structure
+
+```
+src/
+├── app/                # Next.js App Router
+│   ├── _components/    # Client-side components
+│   ├── api/            # API routes
+│   ├── layout.tsx      # Root layout
+│   └── page.tsx        # Homepage
+├── server/
+│   ├── api/            # tRPC API
+│   │   ├── routers/    # tRPC routers
+│   │   ├── root.ts     # Root router
+│   │   └── trpc.ts     # tRPC helpers
+│   └── db/             # Database
+│       ├── index.ts    # Database client
+│       └── schema.ts   # Drizzle schema
+├── styles/             # Global styles
+└── trpc/               # tRPC client utilities
+```
+
+## 🚢 Deployment
+
+This application can be deployed on various platforms:
+
+- [Vercel](https://vercel.com) (recommended)
+- [Netlify](https://netlify.com)
+- [Railway](https://railway.app) (for both app and database)
+
+
+## 👨‍💻 Author
+
+[Rahul](https://github.com/rahul-004x)
