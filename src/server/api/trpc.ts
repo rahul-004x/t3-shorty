@@ -9,8 +9,11 @@
 import { initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { TRPCError } from "@trpc/server";
 
 import { db } from "@/server/db";
+import { auth } from "@clerk/nextjs/server";
+import { ne } from "drizzle-orm";
 
 /**
  * 1. CONTEXT
@@ -25,8 +28,10 @@ import { db } from "@/server/db";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
+  const { userId } = await auth();
   return {
     db,
+    userId,
     ...opts,
   };
 };
@@ -96,6 +101,13 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   return result;
 });
 
+const isAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.userId) throw new TRPCError({ code: "UNAUTHORIZED" });
+  return next({
+    ctx: { ...ctx, userId: ctx.userId },
+  });
+});
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -104,3 +116,4 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * are logged in.
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
+export const portectedProcedure = t.procedure.use(isAuthed);

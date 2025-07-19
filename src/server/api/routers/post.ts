@@ -1,16 +1,20 @@
 import { z } from "zod";
 import { eq, sql } from "drizzle-orm";
 
-import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  portectedProcedure,
+} from "@/server/api/trpc";
 import { link } from "@/server/db/schema";
 import { nanoid } from "nanoid";
 
 export const postRouter = createTRPCRouter({
-  get: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.select().from(link);
+  get: portectedProcedure.query(async ({ ctx }) => {
+    return await ctx.db.select().from(link).where(eq(link.userId, ctx.userId));
   }),
 
-  create: publicProcedure
+  create: portectedProcedure
     .input(
       z.object({
         long: z.string().url(),
@@ -38,7 +42,7 @@ export const postRouter = createTRPCRouter({
       // Insert the new link
       const [newLink] = await ctx.db
         .insert(link)
-        .values({ long, short })
+        .values({ long, short, userId: ctx.userId })
         .returning();
 
       return {

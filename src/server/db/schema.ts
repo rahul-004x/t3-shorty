@@ -3,7 +3,6 @@
 
 import { sql } from "drizzle-orm";
 import {
-  index,
   pgTableCreator,
   text,
   integer,
@@ -19,11 +18,14 @@ import {
  */
 export const createTable = pgTableCreator((name) => `drizzle_${name}`);
 
+
+
 export const link = createTable("Link", {
   id: uuid("id").primaryKey().defaultRandom(),
   short: text("short").notNull().unique(),
   long: text("long").notNull(),
   clicks: integer("clicks").default(0),
+  userId: text("userId").notNull(),
   createdAt: timestamp("createdAt", { withTimezone: true })
     .defaultNow()
     .notNull(),

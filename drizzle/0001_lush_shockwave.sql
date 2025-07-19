@@ -1,0 +1,1 @@
+ALTER TABLE "drizzle_Link" ADD COLUMN "userId" text NOT NULL;

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { LatestPost } from "@/app/_components/post";
 import { api, HydrateClient } from "@/trpc/server";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export default async function Home() {
   return (
@@ -35,7 +36,15 @@ export default async function Home() {
               </div>
             </Link>
           </div>
-          <LatestPost />
+          <SignedOut>
+            <h1 className="text-xl font-medium underline underline-offset-2">Welcome!</h1>
+            <SignInButton>Sign In / Up to use the services ✨</SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <UserButton />
+            <LatestPost /> {/* renders only your links */}
+          </SignedIn>
         </div>
       </main>
     </HydrateClient>

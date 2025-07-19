@@ -45,13 +45,13 @@ export function LatestPost() {
       >
         <input
           type="text"
-          placeholder="Title"
+          placeholder="https://..."
           onChange={(e) => setUrl(e.target.value)}
           className="w-full rounded-full bg-white/10 px-4 py-2 text-white"
         />
         <input
           type="text"
-          placeholder="custom"
+          placeholder="custom(optional)"
           onChange={(e) => setCustom(e.target.value)}
           className="w-full rounded-full bg-white/10 px-4 py-2 text-white"
         />
@@ -88,7 +88,7 @@ export function LatestPost() {
                 </button>
               </a>
               <span>: {u.long}</span>
-              <span>(clicks: {u.clicks})</span>
+              <span className="absolute right-23">(clicks: {u.clicks})</span>
             </li>
           ))}
         </ul>
